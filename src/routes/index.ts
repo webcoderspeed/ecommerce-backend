@@ -3,6 +3,7 @@
 import { Express, NextFunction, Request, Response } from 'express';
 import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
+import productRoutes from './product.routes';
 
 const basePath = '/api/v1';
 
@@ -20,6 +21,9 @@ const routes = (app: Express) => {
 
 	// User routes
 	app.use(`${basePath}/users`, userRoutes);
+
+	// Product routes
+	app.use(`${basePath}/products`, productRoutes);
 };
 
 export default routes;

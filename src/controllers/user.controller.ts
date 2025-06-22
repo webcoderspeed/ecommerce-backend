@@ -16,6 +16,8 @@ import { formatZodErrors } from '../utils';
  */
 
 export const updateProfile = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	const { id: user_id } = req.user;
+
 	const parsed = updateProfileValidator.safeParse(req.body);
 
 	if (!parsed.success) {
@@ -28,12 +30,12 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response, ne
 
 	const { name, email } = parsed.data;
 
-	const updatedUser = await userService.updateProfile(req.user_id, { name, email });
+	const updatedUser = await userService.updateProfile(user_id, { name, email });
 
 	res.status(200).json({
 		success: true,
 		message: 'Profile updated successfully',
-		user: updatedUser,
+		data: updatedUser,
 	});
 });
 
@@ -44,6 +46,7 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response, ne
  */
 
 export const changePassword = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	const { id: user_id } = req.user;
 	const parsed = changePasswordValidator.safeParse(req.body);
 
 	if (!parsed.success) {
@@ -56,7 +59,7 @@ export const changePassword = asyncHandler(async (req: Request, res: Response, n
 
 	const { currentPassword, newPassword } = parsed.data;
 
-	await userService.changePassword(req.user_id, { currentPassword, newPassword });
+	await userService.changePassword(user_id, { currentPassword, newPassword });
 
 	res.status(200).json({
 		success: true,
@@ -70,10 +73,13 @@ export const changePassword = asyncHandler(async (req: Request, res: Response, n
  * @access Private
  */
 export const getMe = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-	const user = await userService.getMe(req.user_id);
+	const { id: user_id } = req.user;
+
+	const user = await userService.getMe(user_id);
 
 	res.status(200).json({
 		success: true,
-		user,
+		message: 'User fetched successfully',
+		data: user,
 	});
 });

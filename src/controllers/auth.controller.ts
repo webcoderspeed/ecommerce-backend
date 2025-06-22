@@ -4,10 +4,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response, NextFunction } from 'express';
 
 import * as authService from '../services/auth.services';
-import {
-	registerUserInputValidator,
-	loginUserInputValidator,
-} from '../validators/auth.validators';
+import { registerUserInputValidator, loginUserInputValidator } from '../validators/auth.validators';
 import { formatZodErrors } from '../utils';
 
 /**
@@ -26,11 +23,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response, nex
 		return;
 	}
 
-	const { name, email, password } = parsed.data;
-
-	const payload = { name, email, password };
-
-	const token = await authService.registerUser(payload);
+	const token = await authService.registerUser(parsed.data);
 
 	res.cookie('access_token', token, {
 		httpOnly: true,
@@ -41,7 +34,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response, nex
 	res.status(201).json({
 		success: true,
 		message: 'User registered successfully',
-		token,
+		data: token
 	});
 });
 
@@ -61,9 +54,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
 		return;
 	}
 
-	const { email, password } = parsed.data;
-
-	const token = await authService.loginUser({ email, password });
+	const token = await authService.loginUser(parsed.data);
 
 	res.cookie('access_token', token, {
 		httpOnly: true,
@@ -74,6 +65,6 @@ export const loginUser = asyncHandler(async (req: Request, res: Response, next: 
 	res.status(200).json({
 		success: true,
 		message: 'User logged in successfully',
-		token,
+		data: token
 	});
 });

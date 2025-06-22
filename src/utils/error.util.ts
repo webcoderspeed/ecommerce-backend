@@ -16,8 +16,12 @@ export function formatZodErrors(error: ZodError): Record<string, string> {
 
 		if (field) {
 			formattedErrors[field] = issue.message;
+		} else {
+			formattedErrors[issue.code] = issue.message;
 		}
 	});
+
+
 
 	return formattedErrors;
 }

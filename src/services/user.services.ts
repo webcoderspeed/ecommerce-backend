@@ -5,7 +5,6 @@ import { AppError } from '../utils';
 
 import { UpdateProfileInput, ChangePasswordInput } from '../validators';
 
-
 export const getMe = async (id: string) => {
   const user = await User.findById(id);
 
@@ -52,3 +51,4 @@ export const changePassword = async (
 
   return { message: 'Password changed successfully' };
 }
+
