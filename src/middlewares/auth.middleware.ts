@@ -2,12 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import logger from '../config/logger';
 import { verifyJwt } from '../utils';
-import { IUser } from '../types';
 
 declare global {
 	namespace Express {
 		interface Request {
-			user: IUser;
+			user_id: string;
 		}
 	}
 }
@@ -31,7 +30,12 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
   try {
     const decoded = verifyJwt(access_token);
 
-    req.user = decoded as IUser;
+    if (!decoded) {
+      res.status(401);
+      throw new Error('Session expired, please login again!');
+    }
+
+    req.user_id = decoded.id ;
 
     next();
   } catch (error:any) {

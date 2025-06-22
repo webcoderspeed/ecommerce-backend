@@ -1,29 +1,30 @@
 /** @format */
 
-import { z } from "zod";
+import { z } from 'zod';
 
-export const registerUserInputValidator = z.object({
-	name: z.string(
-		{
-			invalid_type_error: 'Name must be a string',
-			required_error: 'Name is required',
-		}
-	).min(3, 'Name is required'),
+export const updateProfileValidator = z.object({
+	name: z.string({
+		required_error: 'Name is required',
+		invalid_type_error: 'Name must be a string',
+	}).min(3, {
+		message: 'Name must be at least 3 character long',
+	}).min(1).optional(),
 	email: z.string({
-		invalid_type_error: 'Email must be a string',
 		required_error: 'Email is required',
-	}).email('Invalid email address'),
-	password: z.string({
-		invalid_type_error: 'Password must be a string',
-		required_error: 'Password is required',
-	}).min(6, 'Password must be at least 6 characters'),
+		invalid_type_error: 'Email must be a string',
+	}).email().optional(),
 });
 
-export type RegisterUserInput = z.infer<typeof registerUserInputValidator>;
-
-export const loginUserInputValidator = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+export const changePasswordValidator = z.object({
+	currentPassword: z.string({
+		required_error: 'Current password is required',
+		invalid_type_error: 'Current password must be a string',
+	}).min(6),
+	newPassword: z.string({
+		required_error: 'New password is required',
+		invalid_type_error: 'New password must be a string',
+	}).min(6),
 });
 
-export type LoginUserInput = z.infer<typeof loginUserInputValidator>;
+export type UpdateProfileInput = z.infer<typeof updateProfileValidator>;
+export type ChangePasswordInput = z.infer<typeof changePasswordValidator>;

@@ -1,7 +1,8 @@
 /** @format */
 
 import { Express, NextFunction, Request, Response } from 'express';
-import authRoutes from './auth.route';
+import authRoutes from './auth.routes';
+import userRoutes from './user.routes';
 
 const basePath = '/api/v1';
 
@@ -14,7 +15,11 @@ const routes = (app: Express) => {
 		});
 	});
 
+	// Auth routes
 	app.use(`${basePath}/auth`, authRoutes);
+
+	// User routes
+	app.use(`${basePath}/users`, userRoutes);
 };
 
 export default routes;

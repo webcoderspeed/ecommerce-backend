@@ -1,7 +1,5 @@
 import { Router } from "express";
 import * as authControllers from '../controllers'
-import { protect } from "../middlewares";
-import * as authValidators from "../validators";
 
 const router = Router();
 

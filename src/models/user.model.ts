@@ -10,6 +10,15 @@ const userSchema: Schema<IUser> = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
+    id: false,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.password;
+        return ret;
+      },
+    },
   }
 );
 

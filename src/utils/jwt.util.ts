@@ -11,7 +11,7 @@ export const generateToken = (id: string) => {
 export const verifyJwt = (token: string) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET)
-    return decoded
+    return decoded as { id: string }
   } catch (error) {
     return null
   }
